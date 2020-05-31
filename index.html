@@ -32,6 +32,14 @@
         while(index2 < row.length){
             kbdXX = document.createElement('kbd');
             kbdXX.textContent = row[index2];
+            buttonXX = document.createElement('button');
+            buttonXX.textContent = '编辑';
+            buttonXX.id = row[index2];
+            buttonXX.onclick = function(xx){
+                key = xx['target']['id'];
+                hash[key] = prompt('给我一个网址');
+            }
+            kbdXX.appendChild(buttonXX);
             divXX.appendChild(kbdXX);
             index2++;
         }

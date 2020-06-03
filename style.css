@@ -1,5 +1,15 @@
 *{margin: 0; padding: 0;}
 a{text-decoration: none;}
+body{
+    background: grey url("./wall.jpg") no-repeat center center;
+    background-size: cover;
+}
+.row{
+    margin: 20px;
+}
+.row > .key{
+    margin: 0 10px;
+}
 kbd{border:1px solid red;width: 4em; height: 4em;display: inline-block;
     text-transform: uppercase;
     position: relative;
@@ -13,12 +23,37 @@ kbd > button{
 kbd:hover > button{
     display: inline-block;
 }
+.key{
+    width: 55px;
+    height: 45px;
+    background: linear-gradient(to bottom, #292929 0%,#111111 100%);
+    border: 1px solid #373737;
+    color: #C5C5C5;
+    font-size: 17px;
+    font-family: 'Helvetica';
+    border-radius: 7px;
+    box-shadow: 0 0 0 1px #1A1B1C, 0 0 0 2PX #1F2020;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
 main{
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
 }
-main > div:nth-child(2){
-    margin-left: 1em;
+main > .wrapper{
+    display: inline-block;
 }
-main > div:nth-child(3){
-    margin-left: 2em;
+main >.wrapper > div:nth-child(2){
+    margin-left: -12px;
+}
+main >.wrapper > div:nth-child(3){
+    margin-left: -90px;
+}
+kbd > img{
+    width: 16px;
+    height: 16px;
 }

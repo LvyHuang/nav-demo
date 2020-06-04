@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>网址导航</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
     <header></header>
@@ -12,57 +13,81 @@
     </main>
     <footer></footer>
 <script>
-    keys = {
+    //1.初始化数据
+    var keys = {
         '0': {0:'q',1:'w',2:'e',3:'r',4:'t',5:'y',6:'u',7:'i',8:'o',9:'p',length:10},
         '1': {0:'a',1:'s',2:'d',3:'f',4:'g',5:'h',6:'j',7:'k',8:'l',length:9},
         '2': {0:'z',1:'x',2:'c',3:'v',4:'b',5:'n',6:'m',length:7},
         'length': 3
     }
-    hash = {
-        'q': 'www.qq.com', 'w': 'weibo.com', 'e': 'ele.com', 'r': 'renren.com', 't': 'tienya.com',
-        'y': 'youtube.com', 'u': 'uc.com', 'i': 'iqiyi.com', 'o': 'opera.com', 'p': undefined,
-        'a': 'acfun.tv', 's': 'sohu.com', 'z': 'zhihu.com', 'm': 'www.mcdonalds.com.cn'
+    var hash = {
+        'q': 'www.qq.com', 'w': 'weibo.com', 'e': 'ele.com', 'r': 'www.renren.com', 't': 'tmall.com',
+        'd': 'douban.com', 'y': 'yy.com', 'u': 'uc.cn', 'i': 'iqiyi.com', 'o': 'opera.com',
+        'a': 'a1.group', 's': 'sohu.com', 'z': 'zhihu.com', 'x':'xiedaimala.com','m': 'www.mcdonalds.com.cn','j':'mos.m.taobao.com'
     }
 
     //取出 localStorage 中的 zzz 对应的 hash
-    hashInLocalStorage = JSON.parse(localStorage.getItem('zzz') || 'null');
+    var hashInLocalStorage = JSON.parse(localStorage.getItem('zzz') || 'null');
     if(hashInLocalStorage){
         hash = hashInLocalStorage;
     }
 
+    function tag(tagName,attributes){
+        var element = document.createElement(tagName);
+        for(var key in attributes){
+            element[key] = attributes[key];
+        }
+        return element;
+    }
+    //2.生成键盘
     //遍历 keys，生成 kbd 标签
-    index = 0;
-    while(index < keys['length']){
-        div = document.createElement('div');
-        div.className = 'row';
+    for(var index = 0;index < keys['length']; index++){
+        var div = tag('div',{className:'row'});
         main.appendChild(div);
-        index2 = 0;
-        row = keys[index];
-        while(index2 < row.length){
-            kbd = document.createElement('kbd');
-            kbd.textContent = row[index2];
-            kbd.className = 'key'
-            button = document.createElement('button');
+        var row = keys[index];
+        for (var index2=0; index2 < row.length; index2++){
+            var span = tag('span',{className:'text'});
+            span.textContent = row[index2];
+
+            var button = tag('button',{className:''});
             button.textContent = '编辑';
             button.id = row[index2];
-            img = document.createElement('img');
-            img.src = 'http://' + hash[row[index2]] + '/favicon.ico';
+
+            var img = tag('img',{className:''});
+            if(hash[row[index2]]){
+                img.src = 'http://' + hash[row[index2]] + '/favicon.ico';
+            }else{
+                img.src= './favicon.ico';
+            }
+            img.onerror = function(xxx){
+                xxx.target.src = './favicon.ico';
+            }
+
             button.onclick = function(xx){
-                key = xx['target']['id'];
-                hash[key] = prompt('给重新给我一个网址');   //变更hash
+                var button2 = xx['target'];
+                var img2 = button2.previousSibling;
+                var key = xx['target']['id'];
+                var x=prompt('请重新给我一个网址');
+                hash[key] = x;          //变更hash
+                img2.src = 'http://' + x + '/favicon.ico';
+                img2.onerror = function(xxx){
+                    xxx.target.src = './favicon.ico';
+                }
                 localStorage.setItem('zzz',JSON.stringify(hash));
             }
+
+            var kbd = tag('kbd',{className:'key'});
+            kbd.appendChild(span);
             kbd.appendChild(img);
             kbd.appendChild(button);
             div.appendChild(kbd);
-            index2++;
         }
-        index++;
     }
 
+    //3.监听键盘
     document.onkeypress = function (xx) {
-        key = xx['key'];
-        website = hash[key]
+        var key = xx['key'];
+        var website = hash[key]
         //location.href = "http://" + website
         window.open("http://"+website, '_blank')
     }
